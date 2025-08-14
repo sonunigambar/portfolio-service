@@ -3,7 +3,7 @@ name: Deploy Portfolio Service to AWS
 on:
   push:
     branches:
-      - release/develop
+      - main
 
 jobs:
   build-test-sonar:
