@@ -24,5 +24,6 @@ public class TestControoller {
     public String userData() {
         log.info("User-only portfolio data");
         return "User-only portfolio data";
+        
     }
 }
