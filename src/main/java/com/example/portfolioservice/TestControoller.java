@@ -17,6 +17,7 @@ public class TestControoller {
     @GetMapping("/user/data/")
     @PreAuthorize("hasRole('USER')")
     public String userData() {
+        System.out.println("User-only portfolio data");
         return "User-only portfolio data";
     }
 }
