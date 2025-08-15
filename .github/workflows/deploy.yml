@@ -19,7 +19,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Build & Test
-        run: mvn clean verify
+        run: mvn clean install
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
