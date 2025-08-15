@@ -28,11 +28,12 @@
     </scm>
     <properties>
         <java.version>17</java.version>
-             <sonar.projectKey>sonunigambar_portfolio-service</sonar.projectKey>
-             <sonar.organization>portfolio-service</sonar.organization>
-             <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <jacoco.version>0.8.11</jacoco.version>
+<!--             <sonar.projectKey>sonunigambar_portfolio-service</sonar.projectKey>-->
+<!--             <sonar.organization>portfolio-service</sonar.organization>-->
+<!--             <sonar.host.url>https://sonarcloud.io</sonar.host.url>-->
          <sonar.java.binaries>target/classes</sonar.java.binaries>
-         <sonar.coverage.exclusions>src/test/**,**/*.java</sonar.coverage.exclusions>
+         <sonar.coverage.exclusions>src/test/**</sonar.coverage.exclusions>
     </properties>
     <dependencies>
         <dependency>
@@ -42,6 +43,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.11</version>
         </dependency>
 
         <dependency>
@@ -56,6 +62,28 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.11</version>
+                <executions>
+                    <!-- Prepare agent before running tests -->
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+
+                    <!-- Generate coverage report after tests -->
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
                     <plugin>
                         <groupId>org.sonarsource.scanner.maven</groupId>
