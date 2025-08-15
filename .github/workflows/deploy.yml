@@ -26,6 +26,6 @@ jobs:
         with:
           args: >
             -Dsonar.projectKey=sonunigambar_portfolio-service
-            -Dsonar.organization=sonunigambar
+            -Dsonar.organization=portfolio-service
             -Dsonar.host.url=https://sonarcloud.io
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
