@@ -19,14 +19,14 @@ jobs:
           distribution: 'temurin'
 
       - name: Build & Test
-        run: mvn clean install
+        run: mvn clean verify sonar:sonar -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        with:
-          args: >
-            -Dsonar.projectKey=sonunigambar_portfolio-service
-            -Dsonar.organization=portfolio-service
-            -Dsonar.host.url=https://sonarcloud.io
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+#      - name: SonarCloud Scan
+#        uses: SonarSource/sonarcloud-github-action@master
+#        with:
+#          args: >
+#            -Dsonar.projectKey=sonunigambar_portfolio-service
+#            -Dsonar.organization=portfolio-service
+#            -Dsonar.host.url=https://sonarcloud.io
+#            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 #            -Dsonar.java.binaries=target/classes
