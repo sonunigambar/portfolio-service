@@ -2,7 +2,7 @@
   "taskDefinitionArn": "arn:aws:ecs:ap-southeast-2:466934038172:task-definition/portfolio-task:2",
   "containerDefinitions": [
     {
-      "name": "portfolio-container",
+      "name": "bee03148a5d9e7af909541c9ab6b029d6b9592f0",
       "image": "466934038172.dkr.ecr.ap-southeast-2.amazonaws.com/codingcure/portfolio-service:e513807f972b49ff0c6a2064a4ea19024fb49ed3",
       "cpu": 0,
       "portMappings": [
