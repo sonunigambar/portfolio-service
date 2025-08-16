@@ -9,7 +9,7 @@ env:
   ECR_REPOSITORY: codingcure/portfolio-service           # set this to your Amazon ECR repository name
   ECS_SERVICE: portfolio-service                 # set this to your Amazon ECS service name
   ECS_CLUSTER: svelte-eagle-hlzqaa                 # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: portfolio-task:1 # set this to the path to your Amazon ECS task definition
+  ECS_TASK_DEFINITION: portfolio-task # set this to the path to your Amazon ECS task definition
   CONTAINER_NAME: bee03148a5d9e7af909541c9ab6b029d6b9592f0           # set this to the name of the container in the
 
 jobs:
