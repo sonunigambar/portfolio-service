@@ -7,10 +7,6 @@ on:
 env:
   AWS_REGION: ap-southeast-2                       # set this to your preferred AWS region, e.g. us-west-1
   ECR_REPOSITORY: codingcure/portfolio-service           # set this to your Amazon ECR repository name
-  ECS_SERVICE: portfolio-task-service-6fix9e7r                 # set this to your Amazon ECS service name
-  ECS_CLUSTER: svelte-eagle-hlzqaa                 # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: portfolio-task.json # set this to the path to your Amazon ECS task definition
-  CONTAINER_NAME: bee03148a5d9e7af909541c9ab6b029d6b9592f0           # set this to the name of the container in the
 
 jobs:
   build-test-sonar:
@@ -43,7 +39,7 @@ jobs:
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ github.sha }}
+          IMAGE_TAG: latest
         run: |
           # Build a docker container and
           # push it to ECR so that it can
@@ -52,18 +48,24 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
-      - name: Fill in the new image ID in the Amazon ECS task definition
-        id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v0.1.10
         with:
-          task-definition: ${{ env.ECS_TASK_DEFINITION }}
-          container-name: ${{ env.CONTAINER_NAME }}
-          image: ${{ steps.build-image.outputs.image }}
+          host: ${{ secrets.EC2_HOST }}              # public IP/DNS of EC2
+          username: ec2-user                         # or ubuntu, depending on AMI
+          key: ${{ secrets.EC2_SSH_KEY }}            # your private key (.pem content)
+          script: |
+            aws ecr get-login-password --region ${{ env.AWS_REGION }} \
+              | docker login --username AWS --password-stdin ${{ steps.login-ecr.outputs.registry }}
 
-      - name: Deploy Amazon ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: ${{ env.ECS_SERVICE }}
-          cluster: ${{ env.ECS_CLUSTER }}
-          wait-for-service-stability: true
+            # Pull latest image
+            docker pull ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
+
+            # Stop old container (if running)
+            docker stop ${{ env.CONTAINER_NAME }} || true
+            docker rm ${{ env.CONTAINER_NAME }} || true
+
+            # Run new container
+            docker run -d -p ${{ env.APP_PORT }}:8080 --name ${{ env.CONTAINER_NAME }} \
+              ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
+
