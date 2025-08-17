@@ -27,4 +27,10 @@ public class TestControoller {
         return "User-only portfolio data";
         
     }
+    @GetMapping("/test/")
+    public String test() {
+        log.info("User-only portfolio data");
+        return "Test From portfolio data";
+
+    }
 }
