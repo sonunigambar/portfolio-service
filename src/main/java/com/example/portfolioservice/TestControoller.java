@@ -23,6 +23,7 @@ public class TestControoller {
     @PreAuthorize("hasRole('USER')")
     public String userData() {
         log.info("User-only portfolio data");
+        
         return "User-only portfolio data";
         
     }
