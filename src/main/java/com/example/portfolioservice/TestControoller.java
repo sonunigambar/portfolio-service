@@ -2,15 +2,17 @@ package com.example.portfolioservice;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
 @RequestMapping("/portfolio")
 public class TestControoller {
+
+    @Autowired
+    UserRepo userRepo;
     private static final Logger log = LoggerFactory.getLogger(TestControoller.class);
 
     @GetMapping("/admin/data/")
@@ -30,6 +32,19 @@ public class TestControoller {
     public String test() {
         log.info("User-only portfolio data");
         return "Test From portfolio data";
+
+    }
+    @GetMapping("/getUser/{id}")
+    public User getUser(@PathVariable String id) {
+        log.info("Fetching UserInfo");
+        return userRepo.findByUserId(Integer.parseInt(id));
+
+    }
+
+    @PostMapping("/createUser")
+    public User getUser(@RequestBody User user) {
+        log.info("Fetching UserInfo");
+        return userRepo.save(user);
 
     }
 }
